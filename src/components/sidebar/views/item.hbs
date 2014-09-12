@@ -1,0 +1,8 @@
+<a href="#{{model.id}}">{{model.subject}}</a>
+{{#if model.items.length}}
+    <ul class="nav">
+        {{#each model.items}}
+            <li><a href="#{{link}}">{{subject}}</a></li>
+        {{/each}}
+    </ul>
+{{/if}}

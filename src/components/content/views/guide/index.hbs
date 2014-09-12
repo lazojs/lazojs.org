@@ -1,0 +1,21 @@
+<div class="content-container">
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Guide</h1>
+            <p>Learn best practices, patterns, concepts, and much more.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-md-9" role="main">
+            {{#each collections.sidebar}}
+                <h1>{{subject}}</h1>
+                <p>{{description}}</p>
+                {{#each items}}
+                    <h2>{{subject}}</h2>
+                    {{partial this.link this}}
+                {{/each}}
+            {{/each}}
+        </div>
+        <div lazo-cmp-container="sidebar" class="col-md-3"></div>
+    </div>
+</div>

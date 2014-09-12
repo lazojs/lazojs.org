@@ -1,0 +1,8 @@
+{
+    "routes": {
+        "": { "component": "home", "layout": "layout" },
+        "topic/:topic(/)": { "component": "content", "layout": "layout" }
+    },
+    "js": ["app/client/js/bootstrap", "app/client/prism"],
+    "css": ["/app/client/css/bootstrap.css", "/app/client/prism.css"]
+}
