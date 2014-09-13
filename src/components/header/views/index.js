@@ -16,7 +16,6 @@ define(['lazoView'], function (LazoView) {
         navigate: function (e) {
             var self = this;
 
-            this.$('.navbar-nav li').removeClass('active');
             this.setActiveLink($(e.currentTarget).closest('li'));
             LAZO.app.on('navigate:application:begin', function () {
                 self.setActiveLink($(e.currentTarget).closest('li'));
@@ -24,6 +23,7 @@ define(['lazoView'], function (LazoView) {
         },
 
         setActiveLink: function ($el) {
+            this.$('.navbar-nav li').removeClass('active');
             if (window.location.pathname !== '/') {
                 $el = $el || this.$('.navbar-nav a[href*="' + window.location.pathname + '"]').closest('li');
                 $el.addClass('active');
