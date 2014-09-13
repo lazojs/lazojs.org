@@ -19,7 +19,7 @@ define(['lazoView'], function (LazoView) {
             this.$('.navbar-nav li').removeClass('active');
             this.setActiveLink($(e.currentTarget).closest('li'));
             LAZO.app.on('navigate:application:begin', function () {
-                this.setActiveLink($(e.currentTarget).closest('li'));
+                self.setActiveLink($(e.currentTarget).closest('li'));
             });
         },
 
