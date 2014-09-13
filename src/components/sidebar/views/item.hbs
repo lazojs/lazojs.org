@@ -1,8 +1,8 @@
-<a href="#{{model.id}}">{{model.subject}}</a>
+<a href="#{{model.id}}">{{model.topic}}</a>
 {{#if model.items.length}}
     <ul class="nav">
         {{#each model.items}}
-            <li><a href="#{{link}}">{{subject}}</a></li>
+            <li><a href="#{{link}}">{{topic}}</a></li>
         {{/each}}
     </ul>
 {{/if}}

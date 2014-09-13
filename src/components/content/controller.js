@@ -1,4 +1,4 @@
-define(['app/controller'], function (Ctl) {
+define(['app/controller', 'text!./views/partials/main.hbs'], function (Ctl, mainPartial) {
 
     var Handlebars = LAZO.app.getTemplateEngine('handlebars').engine;
     var views = {
@@ -38,11 +38,12 @@ define(['app/controller'], function (Ctl) {
         },
 
         registerPartials: function (callback) {
-            var subjects = this.ctx.collections.sidebar.toJSON();
+            var topics = this.ctx.collections.sidebar.toJSON();
             var subTopics = [];
             var partials = [];
             var self = this;
 
+            Handlebars.registerPartial('main', mainPartial);
             Handlebars.registerHelper('partial', function (name, context, opt) {
                 name = name.replace(/\//g, '_');
                 var f = Handlebars.partials[name];
@@ -56,9 +57,9 @@ define(['app/controller'], function (Ctl) {
                 return new Handlebars.SafeString(f(context));
             });
 
-            for (var i = 0; i < subjects.length; i++) {
-                if (subjects[i].items) {
-                    subTopics = subTopics.concat(subjects[i].items);
+            for (var i = 0; i < topics.length; i++) {
+                if (topics[i].items) {
+                    subTopics = subTopics.concat(topics[i].items);
                 }
             }
 
