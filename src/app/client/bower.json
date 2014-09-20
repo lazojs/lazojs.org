@@ -1,9 +1,9 @@
 {
   "name": "lazojs.org",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "homepage": "https://github.com/walmartlabs/lazojs.org",
   "authors": [
-    "Jason <JStrimpel@walmartlabs.com>"
+    "Jason Strimpel <jstrimpel@walmartlabs.com>"
   ],
   "moduleType": [
     "amd"
