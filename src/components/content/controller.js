@@ -1,4 +1,5 @@
-define(['app/controller', 'text!./views/partials/main.hbs'], function (Ctl, mainPartial) {
+define(['app/controller', 'text!./views/partials/main.hbs', 'l!prism', 'l!prism-clike', 'l!prism-javascript'],
+    function (Ctl, mainPartial) {
 
     var Handlebars = LAZO.app.getTemplateEngine('handlebars').engine;
     var views = {

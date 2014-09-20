@@ -3,6 +3,11 @@
         "": { "component": "home", "layout": "layout" },
         "topic/:topic(/)": { "component": "content", "layout": "layout" }
     },
-    "js": ["app/client/js/bootstrap", "app/client/prism"],
-    "css": ["/app/client/css/bootstrap.css", "/app/client/prism.css"]
+    "js": [
+        "l!bootstrap"
+    ],
+    "css": [
+        "/app/client/bower_components/bootstrap/dist/css/bootstrap.css",
+        "/app/client/bower_components/prism/themes/prism.css"
+    ]
 }

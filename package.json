@@ -1,0 +1,35 @@
+{
+    "name": "lazo.org",
+    "version": "0.0.1",
+    "description": "A command line utility for quickly creating LazoJS applications",
+    "homepage": "https://github.com/jstrimpel/lrrr",
+    "keywords": [
+        "generator",
+        "lazo",
+        "lazojs",
+        "command line"
+    ],
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "/blob/master/LICENSE-MIT"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jstrimpel/lrrr"
+    },
+    "bugs": {
+        "url": "https://github.com/jstrimpel/lrrr/issues"
+    },
+    "private": false,
+    "main": "src/index",
+    "scripts": {
+        "test": "gulp ci"
+    },
+    "devDependencies": {
+        "gulp": "3.8.8",
+        "gulp-jshint": "1.8.4",
+        "gulp-nodemon": "1.0.4"
+    }
+}

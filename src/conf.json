@@ -1,0 +1,18 @@
+{
+    "requirejs": {
+        "shim": {
+            "prism-clike": {
+                "deps": ["prism"]
+            },
+            "prism-javascript": {
+                "deps": ["prism-clike"]
+            }
+        },
+        "paths": {
+            "bootstrap": "app/client/bower_components/bootstrap/dist/js/bootstrap",
+            "prism": "app/client/bower_components/prism/prism",
+            "prism-clike": "app/client/bower_components/prism/components/prism-clike",
+            "prism-javascript": "app/client/bower_components/prism/components/prism-javascript"
+        }
+    }
+}
