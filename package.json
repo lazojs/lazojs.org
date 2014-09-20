@@ -1,13 +1,12 @@
 {
     "name": "lazo.org",
     "version": "0.0.1",
-    "description": "A command line utility for quickly creating LazoJS applications",
+    "description": "I am lazojs.org.",
     "homepage": "https://github.com/walmartlabs/lazojs.org",
     "keywords": [
-        "generator",
         "lazo",
         "lazojs",
-        "command line"
+        "documentation"
     ],
     "licenses": [
         {
@@ -22,7 +21,7 @@
     "bugs": {
         "url": "https://github.com/walmartlabs/lazojs.org/issues"
     },
-    "private": false,
+    "private": true,
     "main": "src/index",
     "scripts": {
         "test": "gulp ci"
