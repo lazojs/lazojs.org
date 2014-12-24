@@ -1,0 +1,21 @@
+[
+    {
+        "topic": "Getting Started",
+        "id": "getting-started",
+        "description": "Learn how to quickly get an application up and running using the TodoMVC.",
+        "items": [
+            {
+                "topic": "Installing Lazo",
+                "link": "installation"
+            },
+            {
+                "topic": "Installing TodoMVC",
+                "link": "todomvc"
+            },
+            {
+                "topic": "Starting TodoMVC",
+                "link": "starting-an-application"
+            }
+        ]
+    }
+]

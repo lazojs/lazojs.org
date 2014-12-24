@@ -1,0 +1,13 @@
+.footer {
+    position: fixed;
+    bottom: 0;
+    background-color: #eee;
+    height: 50px;
+    min-width: 100%;
+    border-top: solid 1px #e7e7e7;
+
+    p {
+        line-height: 50px;
+        z-index: 1030;
+    }
+}
