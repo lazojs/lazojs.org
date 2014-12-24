@@ -15,9 +15,10 @@
   font-size: 1em; }
 [lazo-cmp-name="home"] .white h2, [lazo-cmp-name="home"] .blue h2 {
   max-width: 50%;
-  font-size: 1.8em;
+  font-size: 2.5em;
   text-align: center;
-  font-weight: 200; }
+  font-weight: 200;
+  margin-top: 0; }
 [lazo-cmp-name="home"] .white {
   background: #fff; }
 [lazo-cmp-name="home"] .blue {
@@ -26,3 +27,22 @@
   background: #ebf3f6; }
   [lazo-cmp-name="home"] .blue h2 {
     color: #65656d; }
+[lazo-cmp-name="home"] .getting-started h2 {
+  margin-bottom: 6px; }
+[lazo-cmp-name="home"] .getting-started .intro {
+  margin-bottom: 30px; }
+[lazo-cmp-name="home"] .getting-started p {
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 6px; }
+[lazo-cmp-name="home"] .getting-started p, [lazo-cmp-name="home"] .getting-started .code-wrapper {
+  max-width: 50%; }
+[lazo-cmp-name="home"] .getting-started .code-wrapper {
+  margin-bottom: 40px; }
+[lazo-cmp-name="home"] .community h2 {
+  margin-bottom: 6px; }
+[lazo-cmp-name="home"] .community p {
+  font-size: 1.2em;
+  text-align: center; }
+[lazo-cmp-name="home"] .community .logos {
+  margin: 50px 0 50px 0; }

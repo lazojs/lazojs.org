@@ -1,9 +1,16 @@
 {
     "routes": {
         "": { "component": "home", "layout": "layout" },
+        "blog(/)": { "component": "blog", "layout": "layout" },
+        "about(/)": { "component": "about", "layout": "layout" },
+        "community(/)": { "component": "community", "layout": "layout" },
+        "": { "component": "home", "layout": "layout" },
         "topic/:topic(/)": { "component": "content", "layout": "layout" }
     },
     "js": [
-        "l!bootstrap"
+        "l!bootstrap",
+        "l!prism",
+        "l!prism-clike",
+        "l!prism-javascript"
     ]
 }
