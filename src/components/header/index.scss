@@ -1,0 +1,27 @@
+[lazo-cmp-name="header"] {
+    .navbar {
+        border: none;
+        background: #fff;
+
+        &.scrolling {
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav {
+            a {
+                color: #424242;
+                font-size: 1.2em;
+
+                &:hover {
+                    color: #3174ba;
+                }
+            }
+        }
+
+        .navbar-brand {
+            padding: 5px 0 5px 25px;
+            display: block;
+        }
+    }
+}
+

@@ -1,0 +1,10 @@
+.footer {
+  height: 50px;
+  border-top: solid 1px #e7e7e7; }
+  .footer .copy, .footer .team {
+    text-align: center;
+    color: #424242; }
+  .footer .team {
+    margin-top: 10px; }
+  .footer .copy {
+    font-size: 0.9em; }
