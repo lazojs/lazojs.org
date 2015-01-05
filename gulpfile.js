@@ -4,9 +4,7 @@ var jshint = require('gulp-jshint');
 var nodemon = require('gulp-nodemon');
 var path = require('path');
 var sass = require('gulp-sass');
-// assumes first path is the global node modules path
-var NODE_PATH = process.env.NODE_PATH.split(':')[0];
-var lazo = path.normalize(NODE_PATH + path.sep + 'lazo' + path.sep + 'lazo.js');
+var lazo = path.normalize('.' + path.sep + 'node_modules' + path.sep + 'lazo' + path.sep + 'lazo.js');
 
 gulp.task('lint', function () {
     return gulp.src(['src/**/*.js', '!src/app/client/bower_components/**/**.*', '!.bowerrc'])
