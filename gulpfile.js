@@ -15,7 +15,7 @@ gulp.task('lint', function () {
 });
 
 gulp.task('develop', function () {
-    nodemon({ script: lazo, watch: ['src'], args: ['start', path.normalize(__dirname + path.sep + 'src')] })
+    nodemon({ script: lazo, watch: ['src'], args: ['start', path.normalize(__dirname + path.sep + 'dist')] })
     .on('change', ['lint'])
     .on('restart', function () {
         console.log('restarted!');
