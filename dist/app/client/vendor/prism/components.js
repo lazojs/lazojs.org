@@ -201,7 +201,7 @@ var components = {
 			"owner" : "bacchus123"
 		},
 		"nasm": {
-			"title": "nasm",
+			"title": "NASM",
 			"owner": "rbmj"
 		},
 		"perl": {
@@ -264,6 +264,10 @@ var components = {
 			"title": "Dart",
 			"require": "clike",
 			"owner": "Golmote"
+		},
+		"powershell": {
+			"title": "PowerShell",
+			"owner": "nauzilus"
 		}
 	},
 	"plugins": {

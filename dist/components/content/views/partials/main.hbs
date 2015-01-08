@@ -1,16 +1,20 @@
 <div class="col-md-9" role="main">
     {{#each collections.sidebar}}
-        <h1>
+        <h3 id="{{id}}">
             <a name="{{id}}" class="anchor"aria-hidden="true"></a>
             {{topic}}
-        </h1>
+        </h3>
         <p>{{description}}</p>
-        {{#each items}}
-            <h2>
-                <a name="{{link}}" class="anchor"aria-hidden="true" /></a>
-                {{topic}}
-            </h2>
-            {{partial this.link this}}
-        {{/each}}
+
+        <div class="col-md-12">
+            {{#each items}}
+                <h4 id="{{link}}">
+                    <a name="{{link}}" class="anchor"aria-hidden="true" /></a>
+                    {{topic}}
+                </h4>
+                {{partial this.link this}}
+                <br />
+            {{/each}}
+        </div>
     {{/each}}
 </div>
