@@ -1,6 +1,8 @@
 define(['app/controller', 'text!./views/partials/main.hbs'],
     function (Ctl, mainPartial) {
 
+    'use strict';
+
     var Handlebars = LAZO.app.getTemplateEngine('handlebars').engine;
     var views = {
         guide: true,
@@ -9,33 +11,59 @@ define(['app/controller', 'text!./views/partials/main.hbs'],
 
     return Ctl.extend({
 
-        components: [{ target: 'sidebar', name: 'sidebar' }],
+        components: [
+            { target: 'sidebar', name: 'sidebar' },
+            { target: 'title', name: 'title' }
+        ],
 
         index: function (options) {
             var self = this;
             var topic = this.ctx.params.topic;
+            var counter = 0;
+            var expected = 2;
 
-            this.view = views[topic] ? (topic + '/index') : 'index';
-            this.ctx.params.sidebar = 'components/content/views/' +
-                (views[topic] ? (this.ctx.params.topic + '/') : 'sidebar.json');
-
-            this.loadCollection('sidebar', {
-                params: {
-                    sidebar: this.ctx.params.sidebar
-                },
-                success: function (collection) {
-                    self.ctx.collections.sidebar = collection;
-                    options.ctx = {
-                        collections: {
-                            sidebar: collection
-                        }
-                    };
+            function success() {
+                counter++;
+                if (counter === expected) {
                     self.registerPartials(function () {
                         Ctl.prototype.index.call(self, options);
                     });
+                }
+            }
+
+            options.ctx = {
+                models: {},
+                collections: {}
+            };
+
+            this.view = views[topic] ? (topic + '/index') : 'index';
+            this.ctx.params.path = 'components/content/views/' +
+                (views[topic] ? (this.ctx.params.topic + '/') : '/');
+
+            this.loadCollection('content', {
+                params: {
+                    path: this.ctx.params.path + 'sidebar.json'
+                },
+                success: function (collection) {
+                    self.ctx.collections.sidebar = collection;
+                    options.ctx.collections.sidebar = collection;
+                    success();
                 },
                 error: options.error
             });
+
+            this.loadModel('content', {
+                params: {
+                    path: self.ctx.params.path + 'title.json'
+                },
+                success: function (model) {
+                    self.ctx.models.title = model;
+                    options.ctx.models.title = model;
+                    success();
+                },
+                error: options.error
+            });
+
         },
 
         registerPartials: function (callback) {

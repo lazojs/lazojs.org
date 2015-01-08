@@ -5,9 +5,9 @@ define(['lazoSyncher'], function (LazoSyncher) {
     return LazoSyncher.extend({
 
         fetch: function (options) {
-            LAZO.require(['json!' + options.params.sidebar + 'sidebar.json'], function (sidebar) {
-                options.success(sidebar);
-            }, function (err) {
+            LAZO.require(['json!' + options.params.path], function (content) {
+                options.success(content);
+            }, function () {
                 options.success([]);
             });
         }
