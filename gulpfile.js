@@ -30,3 +30,7 @@ gulp.task('sass', function () {
         .pipe(sass())
         .pipe(gulp.dest('./dist'));
 });
+
+gulp.task('default', ['sass', 'copy'], function(){
+    gulp.start('develop');
+});

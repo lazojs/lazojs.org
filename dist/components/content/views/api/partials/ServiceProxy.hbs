@@ -1,0 +1,204 @@
+<p>A utility class that can be used to call service endpoints.
+This is exposed with the <code>proxy</code> property on the <a href="LazoSyncher.md#proxy">LazoSyncher</a></p>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        fetch: function(options){
+            // Do some async get
+            this.proxy.get(&#39;http://path/to/model&#39;, {
+                params: options.params,
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            });
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-get-svc-options-"><code>get(svc, options)</code></h3>
+<p>Use to send a <code>GET</code> request to a service.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>svc</code> <em>(String)</em>: The url for a given service endpoint.</li>
+<li><code>options</code> <em>(Object)</em>: Options hash.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+<li><code>[params]</code> <em>(Object)</em>: A hash containing name-value pairs used in url substitution.</li>
+<li><code>[headers]</code> <em>(Object)</em>: A hash containing name-value pairs of headers to be sent to the service.</li>
+<li><code>[raw]</code> <em>(Boolean)</em>: A boolean that if set to true will return a unparsed response. Defaults to <code>false</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        fetch: function(options){
+            var svc = &#39;path/to/service/{{id}}&#39;
+            var options = {
+                params: {
+                    id: 1
+                },
+                headers: {
+                    &#39;Content-Type&#39;: &#39;application/json&#39;
+                },
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            };
+
+            this.proxy.get(svc, options);
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-post-svc-attributes-options-"><code>post(svc, attributes, options)</code></h3>
+<p>Use to send a <code>POST</code> request to a service.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>svc</code> <em>(String)</em>: The url for a given service endpoint.</li>
+<li><code>attributes</code> <em>(Object)</em>: A hash containing name-value pairs used to be sent as the payload to the server.</li>
+<li><code>options</code> <em>(Object)</em>: Options hash.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+<li><code>[params]</code> <em>(Object)</em>: A hash containing name-value pairs used in url substitution.</li>
+<li><code>[headers]</code> <em>(Object)</em>: A hash containing name-value pairs of headers to be sent to the service.</li>
+<li><code>[raw]</code> <em>(Boolean)</em>: A boolean that if set to true will return a unparsed response. Defaults to <code>false</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        add: function(options){
+            var svc = &#39;path/to/service&#39;
+            var attributes = {
+                name: &#39;Name&#39;
+            };
+            var options = {
+                params: attributes,
+                headers: {
+                    &#39;Content-Type&#39;: &#39;application/json&#39;
+                },
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            };
+
+            this.proxy.post(svc, attributes, options);
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-put-svc-attributes-options-"><code>put(svc, attributes, options)</code></h3>
+<p>Use to send a <code>PUT</code> request to a service.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>svc</code> <em>(String)</em>: The url for a given service endpoint.</li>
+<li><code>attributes</code> <em>(Object)</em>: A hash containing name-value pairs used to be sent as the payload to the server.</li>
+<li><code>options</code> <em>(Object)</em>: Options hash.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+<li><code>[params]</code> <em>(Object)</em>: A hash containing name-value pairs used in url substitution.</li>
+<li><code>[headers]</code> <em>(Object)</em>: A hash containing name-value pairs of headers to be sent to the service.</li>
+<li><code>[raw]</code> <em>(Boolean)</em>: A boolean that if set to true will return a unparsed response. Defaults to <code>false</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        update: function(options){
+            var svc = &#39;path/to/service/{{id}}&#39;
+            var attributes = {
+                name: &#39;Name&#39;,
+                id: 1
+            };
+            var options = {
+                params: attributes,
+                headers: {
+                    &#39;Content-Type&#39;: &#39;application/json&#39;
+                },
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            };
+
+            this.proxy.put(svc, attributes, options);
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-destroy-svc-attributes-options-"><code>destroy(svc, attributes, options)</code></h3>
+<p>Use to send a <code>DELETE</code> request to a service.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>svc</code> <em>(String)</em>: The url for a given service endpoint.</li>
+<li><code>attributes</code> <em>(Object)</em>: A hash containing name-value pairs used to be sent as the payload to the server.</li>
+<li><code>options</code> <em>(Object)</em>: Options hash.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+<li><code>[params]</code> <em>(Object)</em>: A hash containing name-value pairs used in url substitution.</li>
+<li><code>[headers]</code> <em>(Object)</em>: A hash containing name-value pairs of headers to be sent to the service.</li>
+<li><code>[raw]</code> <em>(Boolean)</em>: A boolean that if set to true will return a unparsed response. Defaults to <code>false</code>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        destroy: function(options){
+            var svc = &#39;path/to/service/{{id}}&#39;
+            var attributes = {
+                name: &#39;Name&#39;,
+                id: 1
+            };
+            var options = {
+                params: attributes,
+                headers: {
+                    &#39;Content-Type&#39;: &#39;application/json&#39;
+                },
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            };
+
+            this.proxy.destroy(svc, attributes, options);
+
+        };
+
+    });
+
+});</code></pre>
+

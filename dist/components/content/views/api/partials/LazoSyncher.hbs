@@ -1,0 +1,162 @@
+<p>The LazoSyncher is a server only concept in Lazo that allows developers to execute
+server side methods from models and collections on the client and server.</p>
+<p>By extending the Syncher class developers are able write code that can directly
+interact with any data store.  All methods on the Syncher are expected to be asynchronous.</p>
+<p>If a Syncher exists it will be used by the framework to back a <a href="LazoModel.md">LazoModel</a> or <a href="LazoCollection.md">LazoCollection</a>.
+Essentially becoming the sync for the model or collection.</p>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        fetch: function(options){
+            // Do some async get
+            this.proxy.get(&#39;http://path/to/model&#39;, {
+                params: options.params,
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            });
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-fetch-options-"><code>fetch(options)</code></h3>
+<p>The fetch method will be called when the LAZO.app&#39;s or LazoController&#39;s loadModel or loadCollection method is executed
+or manually from a model or collections instance using <code>model.fetch</code>.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>options</code> <em>(Object)</em>: The options specified in a call to <code>loadModel</code>, <code>loadCollection</code> or <code>fetch</code>.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        fetch: function(options){
+            // Do some async get
+            this.proxy.get(&#39;http://path/to/model&#39;, {
+                params: options.params,
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            });
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-add-attributes-options-"><code>add(attributes, options)</code></h3>
+<p>The add method will be called when the LAZO.app&#39;s or LazoController&#39;s create method is executed
+or manually from a model or collections instance using <code>model.save</code>.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>arguments</code> <em>(Object)</em>: A hash of the model&#39;s state that will be the attributes a new model.</li>
+<li><code>options</code> <em>(Object)</em>: The options specified in a call to a model&#39;s save method.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        add: function(attributes, options){
+            // Do some async get
+            this.proxy.post(&#39;http://path/to/model&#39;, {
+                params: options.params,
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            });
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-update-attributes-options-"><code>update(attributes, options)</code></h3>
+<p>The update method will be called when the LazoModel&#39;s save method is executed.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>arguments</code> <em>(Object)</em>: A hash of the model&#39;s state that will update the attributes of a model.</li>
+<li><code>options</code> <em>(Object)</em>: The options specified in a call to a model&#39;s save method.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        update: function(attributes, options){
+            // Do some async get
+            this.proxy.put(&#39;http://path/to/model&#39;, {
+                params: options.params,
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            });
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-destroy-options-"><code>destroy(options)</code></h3>
+<p>The destroy method will be called when the LazoModel&#39;s destroy method is executed.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>options</code> <em>(Object)</em>: The options specified in a call to a model&#39;s destroy method.<ul>
+<li><code>success</code> <em>(Function)</em>: Callback function to be called when fetch succeeds, passed <code>response</code> as argument.</li>
+<li><code>error</code> <em>(Function)</em>: Callback function to be called when fetch fails, passed <code>response</code> as argument.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoSyncher&#39;], function (LazoSyncher) {
+
+    return LazoSyncher.extend({
+
+        destroy: function(options){
+            // Do some async get
+            this.proxy.destroy(&#39;http://path/to/model&#39;, {}, {
+                params: options.params,
+                success: function(response){
+                    options.success(response);
+                },
+                error: function(error){
+                    options.error(error);
+                }
+            });
+
+        };
+
+    });
+
+});</code></pre>
+<h3 id="-proxy-"><code>proxy</code></h3>
+<p>See <a href="ServiceProxy.md">Service Proxy</a>.</p>
+

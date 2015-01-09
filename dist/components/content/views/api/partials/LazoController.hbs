@@ -1,0 +1,474 @@
+<p>In LazoJS, controllers are optional, but the <code>LazoController</code> class must be <a href="#extend"><strong>extended</strong></a> for implementing the business logic of a new component.</p>
+<p>A controller is where routing action handlers must be implemented and it is also the recommended place to keep view action handlers. Having <em>fat controllers</em> and <em>thin views</em> is a practice that should facilitate testing, since views are typically more difficult to test.</p>
+<pre><code class="lang-javascript">define([&#39;lazoCtl&#39;], function (LazoController) {
+
+  &#39;use strict&#39;;
+
+  // Call the extend static method
+  return LazoController.extend({
+    // Example of routing action handler
+    index: function (options) {
+      var self = this;
+
+      // Load a model
+      self.loadModel(&#39;myModel&#39;, {
+        error: options.error,
+
+        success: function (myModel) {
+          // Add model instance to the component&#39;s context object
+          self.ctx.models.myModel = myModel;
+
+          // Call the router callback, passing the name if the view to be rendered
+          options.success(&#39;index&#39;);
+        }
+      });
+    },
+
+    // Example of view action handler
+    save: function (data, options) {
+      // Save the data provided by the view into the model instance and all the way to the server
+      this.ctx.models.myModel.save(data, options);
+    }
+  });
+});</code></pre>
+<h3 id="-addchild-container-cmpname-options-"><code>addChild(container, cmpName, options)</code></h3>
+<p>Adds a child component into the given container.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>container</code> <em>(String)</em>: A component container name, it has to match the <code>lazo-cmp-container</code> attribute value from an existing tag in the current view;</li>
+<li><code>cmpName</code> <em>(String)</em>: The name of component to be instantiated and added inside the given container;</li>
+<li><code>[options]</code> <em>(Object)</em>: The <code>options</code> hash:<ul>
+<li><code>[ctx]</code> <em>(Object)</em>: The context object to be passed to the child component;</li>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the child component has been successfully instantiated and added to the current view, it must implement the <code>function(childController)</code> interface:<ul>
+<li><code>childController</code> <em>(Object)</em>: The child controller instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<p>First, include a component container into current&#39;s view markup:</p>
+<pre><code class="lang-html">&lt;div lazo-cmp-container=&quot;foo&quot;&gt;&lt;!-- CHILDREN GO HERE --&gt;&lt;/div&gt;</code></pre>
+<p>Then, add a child component from the parent controller:</p>
+<pre><code class="lang-javascript">this.addChild(&#39;foo&#39;, &#39;bar&#39;, {
+  ctx: {
+    params: this.ctx.params
+  },
+  error: function (error){
+    console.log(&#39;Oops...&#39;);
+  },
+  success: function (barController){
+    console.log(&#39;Yay!&#39;); // bar has been added to foo!
+  }
+});</code></pre>
+<!--
+### `augmentCssLink(link)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<!--
+### `augmentImportLink(link)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<h3 id="-clearcookie-name-options-"><code>clearCookie(name, [options])</code></h3>
+<p>Clears a cookie. See <a href="#setCookie"><code>setCookie</code></a>.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> <em>(String)</em>: The cookie name;</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[domain]</code> <em>(String)</em>: The domain where the cookie is valid. It defaults to the current domain;</li>
+<li><code>[path]</code> <em>(String)</em>: The path where the cookie is valid. It defaults to the current path.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.clearCookie(&#39;preferences&#39;, {
+  domain: &#39;example.com&#39;,
+  path: &#39;/&#39;
+});</code></pre>
+<h3 id="-constructor-options-"><code>constructor(options)</code></h3>
+<p>Creates a new controller instance. You may override it if you need to perform some initialization while the instance is created. The <code>LazoController</code> (or current superclass) constructor must be called though.</p>
+<p>Consider overriding <a href="#initialize"><code>initialize</code></a> instead.</p>
+<pre><code class="lang-javascript">var BaseController = LazoController.extend({
+  constructor: function (options){
+    this.createdOn = Date.now();
+    return LazoController.apply(this, arguments);
+  },
+  createdOn: null
+});</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>name</code> <em>(String)</em>: The component name.</li>
+</ul>
+</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: A new controller instance.</p>
+<!--
+### `create(cmpName, ctlOptions, options)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<h3 id="-createcollection-collectionname-attributes-options-"><code>createCollection(collectionName, attributes, options)</code></h3>
+<p>Creates a new collection instance.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>collectionName</code> <em>(String)</em>: The collection name, it should match a collection declared under the <code>models</code> directory;</li>
+<li><code>[attributes]</code> <em>(Array)</em>: An array of attributes to initialize the child models;</li>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>modelName</code> <em>(String)</em>: The model that should be used to create the child instances, it must match a existing model in the application repo;</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the collection instance has been successfully created, it must implement the <code>function(collection)</code> interface:<ul>
+<li><code>collection</code> <em>(LazoCollection)</em>: The recently created collection instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.createCollection(&#39;people&#39;, [
+  {name: &#39;Tim&#39;, age: 5},
+  {name: &#39;Ida&#39;, age: 26},
+  {name: &#39;Rob&#39;, age: 55}
+], {
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  modelName: &#39;person&#39;,
+  success: function (collection) {
+    console.log(&#39;Yay!&#39;);
+    collection.length;  // 3
+  }
+});</code></pre>
+<h3 id="-createmodel-modelname-attributes-options-"><code>createModel(modelName, attributes, options)</code></h3>
+<p>Creates a new model instance.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>modelName</code> <em>(String)</em>: The model name, it should match a model declared under the <code>models</code> directory;</li>
+<li><code>[attributes]</code> <em>(Object)</em>: An hash of attributes to initialize the model;</li>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the model instance has been successfully created, it must implement the <code>function(model)</code> interface:<ul>
+<li><code>model</code> <em>(LazoModel)</em>: The recently created model instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.createModel(&#39;person&#39;, {
+  name: &#39;Tim&#39;, age: 5
+}, {
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  success: function (model) {
+    console.log(&#39;Yay!&#39;);
+    model.get(&#39;name&#39;);  // &#39;Tim&#39;
+  }
+});</code></pre>
+<!--
+### `deserialize(ctl, options)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<h3 id="-a-name-extend-a-extend-properties-classproperties-"><a name="extend"></a><code>extend([properties], [classProperties])</code></h3>
+<p>Creates a custom controller class.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>[properties]</code> <em>(Object)</em>: An object describing the methods and properties for every class instance.</li>
+<li><code>[classProperties]</code> <em>(Object)</em>: An object describing the <strong>static</strong> methods and  properties to be added to the custom controller constructor.</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><em>(Function)</em>: Returns a constructor function for the custom controller class.</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">var FooController = LazoController.extend({
+  bar: 123,
+  foo: function () {
+    return &#39;foo&#39;;
+  }
+}, {
+  baz: function () {
+    return &#39;baz&#39;;
+  },
+  quux: 456
+});
+
+FooController.baz();  // &#39;baz&#39;
+FooController.quux;   // 456
+
+var fooController = new FooController();
+
+fooController instanceof FooController;   // true
+fooController instanceof LazoController;  // true
+
+fooController.bar;    // 123
+fooController.foo();  // &#39;foo&#39;</code></pre>
+<!--
+### `getImport(relativePath)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<h3 id="-getpagetitle-"><code>getPageTitle()</code></h3>
+<p>Returns the current page title. See <a href="#setPageTitle"><code>setPageTitle</code></a>.</p>
+<h4 id="returns">Returns</h4>
+<p><em>(String)</em>: The current page title.</p>
+<!--
+### `getPath`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<h3 id="-a-name-getshareddata-a-getshareddata-key-"><a name="getSharedData"></a><code>getSharedData(key)</code></h3>
+<p>Returns the shared data stored under the given <code>key</code>. See  <a href="#setSharedData"><code>setSharedData</code></a>.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>key</code> <em>(String)</em>: The string key to retrieve the stored data from.</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The shared data stored under the given <code>key</code>.</p>
+<h3 id="-a-name-initialize-a-initialize-options-"><a name="initialize"></a><code>initialize(options)</code></h3>
+<p>Initialize the new controller instance. You may override it if you need to perform some initialization just after the instance is created.</p>
+<pre><code class="lang-javascript">var BaseController = LazoController.extend({
+  initialize: function (options){
+    this.initOn = Date.now();
+  },
+  initOn: null
+});</code></pre>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>name</code> <em>(String)</em>: The component name.</li>
+</ul>
+</li>
+</ul>
+<h3 id="-index-options-"><code>index(options)</code></h3>
+<p>The default action handler. If not overridden, it renders the <strong>index</strong> view.</p>
+<p>Any additional action handlers should implement the same interface. Action handlers should never be called directly. See <a href="#navigate"><code>navigate</code></a>.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>[options]</code> <em>(Object)</em>: The options hash;<ul>
+<li><code>[error]</code> <em>(Function)</em>: To be called if an error occurs, it implements the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[success]</code> <em>(Function)</em>: To be called once the action handler is done and ready to return control to the framework, it implements the <code>function(viewName)</code> interface:<ul>
+<li><code>viewName</code> <em>(String)</em>: The name of the view to be rendered.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">return LazoController.extend({
+  index: function (options) {
+    var self = this;
+    self.loadCollection(&#39;myCollection&#39;, {
+      error: options.error,
+      success: function (myCollection) {
+        self.loadModel(&#39;myModel&#39;, {
+          error: options.error,
+          success: function (myModel) {
+            self.ctx.collections.myCollection = myCollection;
+            self.ctx.models.myModel = myModel;
+            options.success(&#39;index&#39;);
+          }
+        });
+      }
+    });
+  }
+});</code></pre>
+<h3 id="-loadcollection-collectionname-options-"><code>loadCollection(collectionName, options)</code></h3>
+<p>Loads the given collection.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>collectionName</code> <em>(String)</em>: The collection name, it should match a collection declared under the <code>models</code> directory;</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the collection instance has been successfully loaded, it must implement the <code>function(collection)</code> interface;<ul>
+<li><code>collection</code> <em>(LazoCollection)</em>: The collection instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.loadCollection(&#39;people&#39;, {
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  params: {
+    sortBy: &#39;name&#39; // See LazoCollection for params usage
+  },
+  success: function (people) {
+    console.log(&#39;Yay!&#39;);
+  }
+});</code></pre>
+<h3 id="-loadmodel-modelname-options-"><code>loadModel(modelName, options)</code></h3>
+<p>Loads the given model.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>modelName</code> <em>(String)</em>: The model name, it should match a model declared under the <code>models</code> directory;</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the model instance has been successfully loaded, it must implement the <code>function(model)</code> interface:<ul>
+<li><code>model</code> <em>(LazoModel)</em>: The model instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.loadModel(&#39;person&#39;, {
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  params: {
+    id: 123 // See LazoModel for params usage
+  },
+  success: function (people) {
+    console.log(&#39;Yay!&#39;);
+  }
+});</code></pre>
+<h3 id="-a-name-navigate-a-navigate-action-options-"><a name="navigate"></a><code>navigate(action, options)</code></h3>
+<p>Forces navigation the to the given <code>action</code> handler.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>action</code> <em>(String)</em>: The name of the action handler to be executed;</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[success]</code> <em>(Function)</em>: Called if navigation is successful.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.navigate(&#39;edit&#39;, {
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  success: function () {
+    console.log(&#39;Yay!&#39;);
+  }
+});</code></pre>
+<!--
+### `serialize`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<h3 id="-a-name-setcookie-a-setcookie-name-value-options-"><a name="setCookie"></a><code>setCookie(name, value, [options])</code></h3>
+<p>Stores <code>value</code> under the given cookie <code>name</code>.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> <em>(String)</em>: The cookie name;</li>
+<li><code>value</code> <em>(String)</em>: A string to be store under the cookie;</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[domain]</code> <em>(String)</em>: The domain where the cookie is valid. It defaults to the current domain;</li>
+<li><code>[expires]</code> <em>(Number)</em>: The cookie lifetime in days since its creation. It defaults to zero (current session);</li>
+<li><code>[path]</code> <em>(String)</em>: The path where the cookie is valid. It defaults to the current path.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.setCookie(&#39;preferences&#39;, &#39;foo=bar;baz=quux&#39;, {
+  domain: &#39;example.com&#39;,
+  expires: 365,
+  path: &#39;/&#39;
+});</code></pre>
+<h3 id="-a-name-setpagetitle-a-setpagetitle-title-"><a name="setPageTitle"></a><code>setPageTitle(title)</code></h3>
+<p>Sets the page title (displayed in the browser&#39;s title bar).</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>title</code> <em>(String)</em>: The new page title.</li>
+</ul>
+<h3 id="-a-name-setshareddata-a-setshareddata-key-val-"><a name="setSharedData"></a><code>setSharedData(key, val)</code></h3>
+<p>Stores random data that can be accessed from both server and client runtimes.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>key</code> <em>(String)</em>: The string key;</li>
+<li><code>val</code> <em>(Object)</em>: The object to be stored and shared.</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The current controller instance.</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">this.setSharedData(&#39;foo&#39;, {
+  bar: &#39;quux&#39;
+});</code></pre>
+<!--
+### `toJSON(rootCtx)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+
+<!--
+### `transition(prevCtx, view, options)`
+
+#### Arguments
+
+#### Returns
+
+#### Example
+-->
+

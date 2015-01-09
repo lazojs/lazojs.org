@@ -1,0 +1,86 @@
+<p>LazoModels extend <a href="http://backbonejs.org/#Model">Backbone.Model</a>. Lazo also has the concept of a proxy
+layer – one for the client and one for the server. On the client it leverages a custom
+<a href="http://backbonejs.org/#Sync">Backbone.sync</a> that sends all requests through a tunnel end
+point on the Lazo application server. On the server it either forwards the request directly
+to an service end point or if a <a href="LazoSyncher.md">LazoSyncher</a> exists for the model Lazo forwards
+the request to the LazoSyncher.</p>
+<pre><code class="lang-js">define([&#39;lazoModel&#39;], function (LazoModel) {
+
+    return LazoModel.extend({
+
+        doSomething: function () {
+            return &#39;something&#39;;
+        }
+
+    });
+
+});</code></pre>
+<h3 id="-constructor-attributes-options-"><code>constructor(attributes, options)</code></h3>
+<p>Creates a new <code>LazoModel</code> instance.
+You may override it if you need to perform some initialization while the instance is created.
+The <code>LazoModel</code> constructor must be called though.</p>
+<p>Calls the <a href="http://backbonejs.org/#Model-constructor">Backbone.Model.constructor</a>.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>attributes</code> <em>(Object)</em>: See <a href="http://backbonejs.org/#Model-constructor">Backbone.Model.constructor</a>.</li>
+<li><code>options</code> <em>(Object)</em>: See <a href="http://backbonejs.org/#Model-constructor">Backbone.Model.constructor</a>.<ul>
+<li><code>name</code> <em>(String)</em>: Model name.</li>
+<li><code>params</code> <em>(Object)</em>: A hash of name-value pairs used in url substitution.</li>
+<li><code>ctx</code> <em>(Object)</em>: The current context for the request. See <em>TODO: ADD LINK</em>.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">var attributes = { data: &#39;abc&#39; };
+var options = {
+    name: &#39;LazoModel&#39;,
+    params: {
+        id: 123
+    },
+    ctx: {}
+};
+
+new LazoModel(attributes, options);</code></pre>
+<h3 id="-call-name-arguments-options-"><code>call(name, arguments, options)</code></h3>
+<p>Calls the <code>name</code> method on the syncher, passing in <code>arguments</code> and <code>options</code>.</p>
+<p><em>Note - The syncher is a server only concept, so this will initiate a tunnel call.</em></p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> <em>(String)</em>: Name of function to call on the syncher.</li>
+<li><code>arguments</code> <em>(&#42;)</em>: Passed to the function as the first param.</li>
+<li><code>options</code> <em>(Object)</em>: Passed to the function as the second param.<ul>
+<li><code>success</code> <em>(Function)</em>: Function to call when successful.</li>
+<li><code>error</code> <em>(Function)</em>: Function to call if there is a failure.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">var method = &#39;checkName&#39;;
+var arguments = &#39;Name&#39;;
+var options = {
+    success: function(){},
+    error: function: function(){}
+};
+
+lazoModel.call(method, arguments, options);</code></pre>
+<h3 id="-save-attributes-options-"><code>save([attributes], [options])</code></h3>
+<p>Override of <a href="http://backbonejs.org/#Model-save">Backbone.Model.save</a>.
+Exact same functionality except when <code>options.persist</code> is false, it will no-op.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>[attributes]</code> <em>(Object)</em>: Attributes to change prior to save.</li>
+<li><code>options</code> <em>(Object)</em>: Options for save. See <a href="http://backbonejs.org/#Model-save">Backbone.Model.save</a>.<ul>
+<li><code>success</code> <em>(Function)</em>: Function to call when successful.</li>
+<li><code>error</code> <em>(Function)</em>: Function to call if there is a failure.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">var attributes = { name: &#39;Name&#39; };
+var options = {
+    success: function(){},
+    error: function: function(){}
+};
+
+lazoModel.save(attributes, options);</code></pre>
+
