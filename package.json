@@ -1,39 +1,41 @@
 {
-    "name": "lazo.org",
-    "version": "0.0.1",
-    "description": "I am lazojs.org.",
-    "homepage": "https://github.com/walmartlabs/lazojs.org",
-    "keywords": [
-        "lazo",
-        "lazojs",
-        "documentation"
-    ],
-    "licenses": [
-        {
-            "type": "MIT",
-            "url": "/blob/master/LICENSE-MIT"
-        }
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/walmartlabs/lazojs.org"
-    },
-    "bugs": {
-        "url": "https://github.com/walmartlabs/lazojs.org/issues"
-    },
-    "private": true,
-    "main": "src/index",
-    "scripts": {
-        "test": "gulp ci"
-    },
-    "devDependencies": {
-        "gulp": "3.8.8",
-        "gulp-jshint": "1.8.4",
-        "gulp-nodemon": "1.0.4",
-        "node-bourbon": "1.2.3",
-        "gulp-sass": "1.2.0"
-    },
-    "dependencies": {
-        "lazo": "^1.1.1"
+  "name": "lazo.org",
+  "version": "0.0.1",
+  "description": "I am lazojs.org.",
+  "homepage": "https://github.com/walmartlabs/lazojs.org",
+  "keywords": [
+    "lazo",
+    "lazojs",
+    "documentation"
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "/blob/master/LICENSE-MIT"
     }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/walmartlabs/lazojs.org"
+  },
+  "bugs": {
+    "url": "https://github.com/walmartlabs/lazojs.org/issues"
+  },
+  "private": true,
+  "main": "src/index",
+  "scripts": {
+    "test": "gulp ci"
+  },
+  "devDependencies": {
+    "gulp": "3.8.8",
+    "gulp-jshint": "1.8.4",
+    "gulp-markdown": "^1.0.0",
+    "gulp-nodemon": "1.0.4",
+    "gulp-rename": "^1.2.0",
+    "gulp-sass": "1.2.0",
+    "node-bourbon": "1.2.3"
+  },
+  "dependencies": {
+    "lazo": "git+https://github.com/walmartlabs/lazojs.git#development"
+  }
 }
