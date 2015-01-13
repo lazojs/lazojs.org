@@ -8,12 +8,13 @@
 
         <div class="col-md-12">
             {{#each items}}
-                <h4 id="{{link}}">
+                <hr />
+                <br />
+                <h3 id="{{link}}">
                     <a name="{{link}}" class="anchor"aria-hidden="true" /></a>
                     {{topic}}
-                </h4>
+                </h3>
                 {{partial this.link this}}
-                <br />
             {{/each}}
         </div>
     {{/each}}
