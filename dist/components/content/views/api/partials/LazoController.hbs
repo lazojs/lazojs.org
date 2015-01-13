@@ -1,4 +1,3 @@
-<h1 id="lazocontroller">LazoController</h1>
 <p>In LazoJS, controllers are optional, but the <code>LazoController</code> class must be <a href="#extend"><strong>extended</strong></a> for implementing the business logic of a new component.</p>
 <p>A controller is where routing action handlers must be implemented and it is also the recommended place to keep view action handlers. Having <em>fat controllers</em> and <em>thin views</em> is a practice that should facilitate testing, since views are typically more difficult to test.</p>
 <pre><code class="lang-javascript">define([&#39;lazoCtl&#39;], function (LazoController) {
@@ -33,9 +32,9 @@
   });
 });
 </code></pre>
-<h2 id="-addchild-container-cmpname-options-"><code>addChild(container, cmpName, options)</code></h2>
+<h3 id="-addchild-container-cmpname-options-"><code>addChild(container, cmpName, options)</code></h3>
 <p>Adds a child component into the given container.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>container</code> <em>(String)</em>: A component container name, it has to match the <code>lazo-cmp-container</code> attribute value from an existing tag in the current view;</li>
 <li><code>cmpName</code> <em>(String)</em>: The name of component to be instantiated and added inside the given container;</li>
@@ -52,7 +51,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <p>First, include a component container into current&#39;s view markup:</p>
 <pre><code class="lang-html">&lt;div lazo-cmp-container=&quot;foo&quot;&gt;&lt;!-- CHILDREN GO HERE --&gt;&lt;/div&gt;
 </code></pre>
@@ -70,28 +69,28 @@
 });
 </code></pre>
 <!--
-## `augmentCssLink(link)`
+### `augmentCssLink(link)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
 <!--
-## `augmentImportLink(link)`
+### `augmentImportLink(link)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
-<h2 id="-clearcookie-name-options-"><code>clearCookie(name, [options])</code></h2>
+<h3 id="-clearcookie-name-options-"><code>clearCookie(name, [options])</code></h3>
 <p>Clears a cookie. See <a href="#setCookie"><code>setCookie</code></a>.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>name</code> <em>(String)</em>: The cookie name;</li>
 <li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
@@ -100,13 +99,13 @@
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.clearCookie(&#39;preferences&#39;, {
   domain: &#39;example.com&#39;,
   path: &#39;/&#39;
 });
 </code></pre>
-<h2 id="-constructor-options-"><code>constructor(options)</code></h2>
+<h3 id="-constructor-options-"><code>constructor(options)</code></h3>
 <p>Creates a new controller instance. You may override it if you need to perform some initialization while the instance is created. The <code>LazoController</code> (or current superclass) constructor must be called though.</p>
 <p>Consider overriding <a href="#initialize"><code>initialize</code></a> instead.</p>
 <pre><code class="lang-javascript">var BaseController = LazoController.extend({
@@ -117,28 +116,28 @@
   createdOn: null
 });
 </code></pre>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>options</code> <em>(Object)</em>: The options hash:<ul>
 <li><code>name</code> <em>(String)</em>: The component name.</li>
 </ul>
 </li>
 </ol>
-<h3 id="returns">Returns</h3>
+<h4 id="returns">Returns</h4>
 <p><em>(Object)</em>: A new controller instance.</p>
 <!--
-## `create(cmpName, ctlOptions, options)`
+### `create(cmpName, ctlOptions, options)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
-<h2 id="-createcollection-collectionname-attributes-options-"><code>createCollection(collectionName, attributes, options)</code></h2>
+<h3 id="-createcollection-collectionname-attributes-options-"><code>createCollection(collectionName, attributes, options)</code></h3>
 <p>Creates a new collection instance.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>collectionName</code> <em>(String)</em>: The collection name, it should match a collection declared under the <code>models</code> directory;</li>
 <li><code>[attributes]</code> <em>(Array)</em>: An array of attributes to initialize the child models;</li>
@@ -156,7 +155,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.createCollection(&#39;people&#39;, [
   {name: &#39;Tim&#39;, age: 5},
   {name: &#39;Ida&#39;, age: 26},
@@ -172,9 +171,9 @@
   }
 });
 </code></pre>
-<h2 id="-createmodel-modelname-attributes-options-"><code>createModel(modelName, attributes, options)</code></h2>
+<h3 id="-createmodel-modelname-attributes-options-"><code>createModel(modelName, attributes, options)</code></h3>
 <p>Creates a new model instance.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>modelName</code> <em>(String)</em>: The model name, it should match a model declared under the <code>models</code> directory;</li>
 <li><code>[attributes]</code> <em>(Object)</em>: An hash of attributes to initialize the model;</li>
@@ -191,7 +190,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.createModel(&#39;person&#39;, {
   name: &#39;Tim&#39;, age: 5
 }, {
@@ -205,25 +204,25 @@
 });
 </code></pre>
 <!--
-## `deserialize(ctl, options)`
+### `deserialize(ctl, options)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
-<h2 id="-a-name-extend-a-extend-properties-classproperties-"><a name="extend"></a><code>extend([properties], [classProperties])</code></h2>
+<h3 id="-a-name-extend-a-extend-properties-classproperties-"><a name="extend"></a><code>extend([properties], [classProperties])</code></h3>
 <p>Creates a custom controller class.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>[properties]</code> <em>(Object)</em>: An object describing the methods and properties for every class instance.</li>
 <li><code>[classProperties]</code> <em>(Object)</em>: An object describing the <strong>static</strong> methods and  properties to be added to the custom controller constructor.</li>
 </ol>
-<h3 id="returns">Returns</h3>
+<h4 id="returns">Returns</h4>
 <p><em>(Function)</em>: Returns a constructor function for the custom controller class.</p>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">var FooController = LazoController.extend({
   bar: 123,
   foo: function () {
@@ -248,38 +247,38 @@ fooController.bar;    // 123
 fooController.foo();  // &#39;foo&#39;
 </code></pre>
 <!--
-## `getImport(relativePath)`
+### `getImport(relativePath)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
-<h2 id="-getpagetitle-"><code>getPageTitle()</code></h2>
+<h3 id="-getpagetitle-"><code>getPageTitle()</code></h3>
 <p>Returns the current page title. See <a href="#setPageTitle"><code>setPageTitle</code></a>.</p>
-<h3 id="returns">Returns</h3>
+<h4 id="returns">Returns</h4>
 <p><em>(String)</em>: The current page title.</p>
 <!--
-## `getPath`
+### `getPath`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
-<h2 id="-a-name-getshareddata-a-getshareddata-key-"><a name="getSharedData"></a><code>getSharedData(key)</code></h2>
+<h3 id="-a-name-getshareddata-a-getshareddata-key-"><a name="getSharedData"></a><code>getSharedData(key)</code></h3>
 <p>Returns the shared data stored under the given <code>key</code>. See  <a href="#setSharedData"><code>setSharedData</code></a>.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ul>
 <li><code>key</code> <em>(String)</em>: The string key to retrieve the stored data from.</li>
 </ul>
-<h3 id="returns">Returns</h3>
+<h4 id="returns">Returns</h4>
 <p><em>(Object)</em>: The shared data stored under the given <code>key</code>.</p>
-<h2 id="-a-name-initialize-a-initialize-options-"><a name="initialize"></a><code>initialize(options)</code></h2>
+<h3 id="-a-name-initialize-a-initialize-options-"><a name="initialize"></a><code>initialize(options)</code></h3>
 <p>Initialize the new controller instance. You may override it if you need to perform some initialization just after the instance is created.</p>
 <pre><code class="lang-javascript">var BaseController = LazoController.extend({
   initialize: function (options){
@@ -288,17 +287,17 @@ fooController.foo();  // &#39;foo&#39;
   initOn: null
 });
 </code></pre>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ul>
 <li><code>options</code> <em>(Object)</em>: The options hash:<ul>
 <li><code>name</code> <em>(String)</em>: The component name.</li>
 </ul>
 </li>
 </ul>
-<h2 id="-index-options-"><code>index(options)</code></h2>
+<h3 id="-index-options-"><code>index(options)</code></h3>
 <p>The default action handler. If not overridden, it renders the <strong>index</strong> view.</p>
 <p>Any additional action handlers should implement the same interface. Action handlers should never be called directly. See <a href="#navigate"><code>navigate</code></a>.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ul>
 <li><code>[options]</code> <em>(Object)</em>: The options hash;<ul>
 <li><code>[error]</code> <em>(Function)</em>: To be called if an error occurs, it implements the <code>function(error)</code> interface:<ul>
@@ -312,7 +311,7 @@ fooController.foo();  // &#39;foo&#39;
 </ul>
 </li>
 </ul>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">return LazoController.extend({
   index: function (options) {
     var self = this;
@@ -332,9 +331,9 @@ fooController.foo();  // &#39;foo&#39;
   }
 });
 </code></pre>
-<h2 id="-loadcollection-collectionname-options-"><code>loadCollection(collectionName, options)</code></h2>
+<h3 id="-loadcollection-collectionname-options-"><code>loadCollection(collectionName, options)</code></h3>
 <p>Loads the given collection.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>collectionName</code> <em>(String)</em>: The collection name, it should match a collection declared under the <code>models</code> directory;</li>
 <li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
@@ -350,7 +349,7 @@ fooController.foo();  // &#39;foo&#39;
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.loadCollection(&#39;people&#39;, {
   error: function (error) {
     console.log(&#39;Oops...&#39;);
@@ -363,9 +362,9 @@ fooController.foo();  // &#39;foo&#39;
   }
 });
 </code></pre>
-<h2 id="-loadmodel-modelname-options-"><code>loadModel(modelName, options)</code></h2>
+<h3 id="-loadmodel-modelname-options-"><code>loadModel(modelName, options)</code></h3>
 <p>Loads the given model.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>modelName</code> <em>(String)</em>: The model name, it should match a model declared under the <code>models</code> directory;</li>
 <li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
@@ -381,7 +380,7 @@ fooController.foo();  // &#39;foo&#39;
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.loadModel(&#39;person&#39;, {
   error: function (error) {
     console.log(&#39;Oops...&#39;);
@@ -394,9 +393,9 @@ fooController.foo();  // &#39;foo&#39;
   }
 });
 </code></pre>
-<h2 id="-a-name-navigate-a-navigate-action-options-"><a name="navigate"></a><code>navigate(action, options)</code></h2>
+<h3 id="-a-name-navigate-a-navigate-action-options-"><a name="navigate"></a><code>navigate(action, options)</code></h3>
 <p>Forces navigation the to the given <code>action</code> handler.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>action</code> <em>(String)</em>: The name of the action handler to be executed;</li>
 <li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
@@ -408,7 +407,7 @@ fooController.foo();  // &#39;foo&#39;
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.navigate(&#39;edit&#39;, {
   error: function (error) {
     console.log(&#39;Oops...&#39;);
@@ -419,18 +418,18 @@ fooController.foo();  // &#39;foo&#39;
 });
 </code></pre>
 <!--
-## `serialize`
+### `serialize`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
-<h2 id="-a-name-setcookie-a-setcookie-name-value-options-"><a name="setCookie"></a><code>setCookie(name, value, [options])</code></h2>
+<h3 id="-a-name-setcookie-a-setcookie-name-value-options-"><a name="setCookie"></a><code>setCookie(name, value, [options])</code></h3>
 <p>Stores <code>value</code> under the given cookie <code>name</code>.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ol>
 <li><code>name</code> <em>(String)</em>: The cookie name;</li>
 <li><code>value</code> <em>(String)</em>: A string to be store under the cookie;</li>
@@ -441,49 +440,49 @@ fooController.foo();  // &#39;foo&#39;
 </ul>
 </li>
 </ol>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.setCookie(&#39;preferences&#39;, &#39;foo=bar;baz=quux&#39;, {
   domain: &#39;example.com&#39;,
   expires: 365,
   path: &#39;/&#39;
 });
 </code></pre>
-<h2 id="-a-name-setpagetitle-a-setpagetitle-title-"><a name="setPageTitle"></a><code>setPageTitle(title)</code></h2>
+<h3 id="-a-name-setpagetitle-a-setpagetitle-title-"><a name="setPageTitle"></a><code>setPageTitle(title)</code></h3>
 <p>Sets the page title (displayed in the browser&#39;s title bar).</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ul>
 <li><code>title</code> <em>(String)</em>: The new page title.</li>
 </ul>
-<h2 id="-a-name-setshareddata-a-setshareddata-key-val-"><a name="setSharedData"></a><code>setSharedData(key, val)</code></h2>
+<h3 id="-a-name-setshareddata-a-setshareddata-key-val-"><a name="setSharedData"></a><code>setSharedData(key, val)</code></h3>
 <p>Stores random data that can be accessed from both server and client runtimes.</p>
-<h3 id="arguments">Arguments</h3>
+<h4 id="arguments">Arguments</h4>
 <ul>
 <li><code>key</code> <em>(String)</em>: The string key;</li>
 <li><code>val</code> <em>(Object)</em>: The object to be stored and shared.</li>
 </ul>
-<h3 id="returns">Returns</h3>
+<h4 id="returns">Returns</h4>
 <p><em>(Object)</em>: The current controller instance.</p>
-<h3 id="example">Example</h3>
+<h4 id="example">Example</h4>
 <pre><code class="lang-javascript">this.setSharedData(&#39;foo&#39;, {
   bar: &#39;quux&#39;
 });
 </code></pre>
 <!--
-## `toJSON(rootCtx)`
+### `toJSON(rootCtx)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
 
 <!--
-## `transition(prevCtx, view, options)`
+### `transition(prevCtx, view, options)`
 
-### Arguments
+#### Arguments
 
-### Returns
+#### Returns
 
-### Example
+#### Example
 -->
