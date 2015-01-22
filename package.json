@@ -2,7 +2,7 @@
   "name": "lazo.org",
   "version": "0.0.1",
   "description": "I am lazojs.org.",
-  "homepage": "https://github.com/walmartlabs/lazojs.org",
+  "homepage": "https://github.com/lazojs/lazojs.org",
   "keywords": [
     "lazo",
     "lazojs",
@@ -16,10 +16,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/walmartlabs/lazojs.org"
+    "url": "https://github.com/lazojs/lazojs.org"
   },
   "bugs": {
-    "url": "https://github.com/walmartlabs/lazojs.org/issues"
+    "url": "https://github.com/lazojs/lazojs.org/issues"
   },
   "private": true,
   "main": "src/index",
