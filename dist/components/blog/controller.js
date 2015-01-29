@@ -17,6 +17,11 @@ define(['app/controller'],
                 collections: {}
             };
 
+            if (this.ctx.params.year) {
+                return options.success(this.ctx.params.year + '/' + this.ctx.params.month + '/' +
+                    this.ctx.params.day + '/' + this.ctx.params.title);
+            }
+
             this.ctx.params.path = 'components/blog/views/';
 
             this.loadModel('content', {

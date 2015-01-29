@@ -19,6 +19,7 @@
   "dependencies": {
     "bootstrap": "~3.2.0",
     "prism": "gh-pages",
-    "fontawesome": "4.2.0"
+    "fontawesome": "4.2.0",
+    "moment": "2.9.0"
   }
 }

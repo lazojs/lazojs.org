@@ -12,7 +12,8 @@
             "bootstrap": "app/client/vendor/bootstrap/dist/js/bootstrap",
             "prism": "app/client/vendor/prism/prism",
             "prism-clike": "app/client/vendor/prism/components/prism-clike",
-            "prism-javascript": "app/client/vendor/prism/components/prism-javascript"
+            "prism-javascript": "app/client/vendor/prism/components/prism-javascript",
+            "moment": "app/client/vendor/moment/moment"
         }
     }
 }

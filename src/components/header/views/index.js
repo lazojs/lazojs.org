@@ -29,7 +29,8 @@ define(['lazoView', 'jquery'], function (LazoView, $) {
         setActiveLink: function ($el) {
             this.$('.navbar-nav li').removeClass('active');
             if (window.location.pathname !== '/') {
-                $el = $el || this.$('.navbar-nav a[href*="' + window.location.pathname + '"]').closest('li');
+                var pathname = window.location.pathname.split('/');
+                $el = $el || this.$('.navbar-nav a[href*="/' + pathname[1] + '"]').closest('li');
                 $el.addClass('active');
             }
         },

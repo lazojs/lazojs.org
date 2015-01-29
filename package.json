@@ -36,6 +36,6 @@
     "node-bourbon": "1.2.3"
   },
   "dependencies": {
-    "lazo": "git+https://github.com/walmartlabs/lazojs.git#development"
+    "lazo": "1.2.0"
   }
 }

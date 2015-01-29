@@ -2,6 +2,7 @@
     "routes": {
         "": { "component": "home", "layout": "layout" },
         "blog(/)": { "component": "blog", "layout": "layout" },
+        "blog/:year/:month/:day/:title(/)": { "component": "blog", "layout": "layout" },
         "about(/)": { "component": "about", "layout": "layout" },
         "community(/)": { "component": "community", "layout": "layout" },
         "": { "component": "home", "layout": "layout" },

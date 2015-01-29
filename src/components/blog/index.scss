@@ -1,0 +1,26 @@
+[lazo-cmp-name="blog"] {
+    .blog-index {
+        .title {
+            margin-bottom: 0;
+        }
+        .author {
+            color: #646464;
+            margin-bottom: 5px;
+            font-size: 12px;
+        }
+        .synopsis {
+
+        }
+    }
+
+    .blog-posting {
+        h2 {
+            margin-bottom: 3px;
+        }
+
+        .author-date {
+            color: #646464;
+            margin-bottom: 15px;
+        }
+    }
+}

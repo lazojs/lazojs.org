@@ -75,6 +75,7 @@ Exact same functionality except when <code>options.persist</code> is false, it w
 <li><code>options</code> <em>(Object)</em>: Options for save. See <a href="http://backbonejs.org/#Model-save">Backbone.Model.save</a>.<ul>
 <li><code>success</code> <em>(Function)</em>: Function to call when successful.</li>
 <li><code>error</code> <em>(Function)</em>: Function to call if there is a failure.</li>
+<li><code>[syncDateFromChildren]</code> <em>(Boolean)</em> When True the child models created via modelsSchema will update the parent object hierarchy with their data. Defaults to true.</li>
 </ul>
 </li>
 </ol>
@@ -87,3 +88,57 @@ var options = {
 
 lazoModel.save(attributes, options);
 </code></pre>
+<h3 id="-set-attributes-options-"><code>set(attributes, [options])</code></h3>
+<p>Override of <a href="http://backbonejs.org/#Model-set">Backbone.Model.set</a>.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>attributes</code> <em>(Object)</em>: Attributes to set.</li>
+<li><code>[options]</code> <em>(Object)</em>: Options for save. See <a href="http://backbonejs.org/#Model-set">Backbone.Model.save</a>.<ul>
+<li><code>[syncDateToChildren]</code> <em>(Boolean)</em> When True any attribute is set that is the first part of a path in a modelsSchema locator, will update the child&#39;s model data. Defaults to true.</li>
+</ul>
+</li>
+</ol>
+<h3 id="-modelsschema-"><code>[modelsSchema]</code></h3>
+<p>An array of object that provide a mechanism to parse object hierarchies into child LazoModels and LazoCollections.</p>
+<h4 id="schema-object-">schema <em>(Object)</em></h4>
+<ol>
+<li><code>name</code> <em>(String)</em>: Name of model or collection in the repository to use for this child object.</li>
+<li><code>locator</code> <em>(String)</em>: Path used to locate the data in the object hierarchy used to populate the data in the child model/collection.</li>
+<li><code>prop</code> <em>(String)</em>: The name of the property created in the parent object that is a reference to the model/collection instance.</li>
+</ol>
+<h4 id="example">Example</h4>
+<p>Given repo structure:
+repo
+|
+|-- models
+    |
+    |-- parent
+    |-- child</p>
+<p>parent/model.js:    </p>
+<pre><code class="lang-js">define([&#39;lazoModel&#39;], function (LazoModel) {
+
+    return LazoModel.extend({
+
+        modelsSchema: [
+            {
+                name: &#39;child&#39;,
+                locator: &#39;foo.bar.baz&#39;,
+                prop: &#39;theChildModel&#39;
+            }
+        ]
+    });
+
+});
+</code></pre>
+<p>And the given data for the parent/model is:</p>
+<pre><code class="lang-js">{
+    foo: {
+        bar: {
+            baz: {
+                a: &#39;b&#39;
+            }
+        }
+    }
+}
+</code></pre>
+<p>The parent model would have a property <code>theChildModel</code> which would be an instance of the <code>repo/models/child</code> model and have the attributes <code>a</code> which would have a value of <code>b</code>.</p>
