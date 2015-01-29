@@ -10,9 +10,7 @@ var Extensions = {
 	'svg': 'markup',
 	'xml': 'markup',
 	'py': 'python',
-	'rb': 'ruby',
-	'ps1': 'powershell',
-	'psm1': 'powershell'
+	'rb': 'ruby'
 };
 
 Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function(pre) {
