@@ -1,0 +1,205 @@
+<p>The <code>LazoWidget</code> interface is designed to work within the Lazo rendering life cycle on the client and the server. As such a
+widget&#39;s <code>render</code> implementation must function on the client and the server.</p>
+<pre><code class="lang-js">define([&#39;lazoWidget&#39;, &#39;underscore&#39;], function (LazoWidget, _) {
+
+    &#39;use strict&#39;;
+
+    var template = _.template(&#39;&lt;p&gt;Hello! My name is &lt;%=&#39;data-name&#39;%&gt;&lt;/p&gt;&#39;);
+
+    return LazoWidget.extend({
+
+        render: function (options) {
+            options.success(template(this.attributes));
+        }
+
+    });
+
+});
+</code></pre>
+<p>Widget constructors are defined in a <code>LazoView</code> <code>widgets</code> property. The values can be <code>LazoWidget</code> classes or the paths to the widget modules:</p>
+<pre><code class="lang-js">define([&#39;lazoView&#39;, &#39;lazoWidget&#39;], function (LazoView, LazoWidget) {
+
+    &#39;use strict&#39;;
+
+    return LazoView.extend({
+
+        doSomething: function () {
+            return &#39;something&#39;;
+        },
+
+        widgets: {
+            foo: LazoWidget.extend({
+                render: function (options) {
+                    options.success(&#39;I am a widget!&#39;)
+                }
+            }),
+            bar: &#39;app/widgets/bar/index&#39;
+        }
+
+    });
+
+});
+</code></pre>
+<p>Widgets are then declared in the <code>LazoView</code> template:</p>
+<pre><code class="lang-html">&lt;p&gt;I am a view template.&lt;/p&gt;
+&lt;div lazo-widget=&quot;foo&quot; data-something=&quot;{{somevalue}}&quot;&gt;&lt;/div&gt;
+&lt;!-- iterate over a collection and create multiple widget instances --&gt;
+{{#each bars}}
+    &lt;div lazo-widget=&quot;bar&quot; data-somethingelse=&quot;{{anothervalue}}&quot;&gt;&lt;/div&gt;
+{{/each}}
+</code></pre>
+<p>When widgets are created the instances are then added to the <code>LazoView</code> <code>widgetInstances</code> property. In the case above the property would look
+something like the following:</p>
+<pre><code class="lang-js">// view instance
+{
+    widgetInstances: {
+        foo: [instance],
+        bar: [instance1, instance2, ...]
+    }
+}
+</code></pre>
+<h3 id="widget-attibutes">Widget Attibutes</h3>
+<p>Widget container markup attributes are passed to the <code>LazoWidget</code> constructor and assigned to the instance <code>attributes</code> property. Attribute
+values can be used to resolve to context values for the component that instantiated the <code>LazoView</code> that owns the widget instance. This done
+using the &quot;$&quot; in an attribute value:</p>
+<pre><code class="lang-html">&lt;div lazo-widget=&quot;foo&quot; data-status=&quot;$.status&quot;&gt;
+</code></pre>
+<p>This would map <code>&lt;instance&gt;.attributes[&#39;data-status&#39;]</code> to <code>ctx.status</code>. By default a <code>LazoWidget</code> will attempt to coerce values that do not
+resolve to a context property. See <a href="#attrvalcoercion"><code>attrValCoercion</code></a> for further details.</p>
+<h3 id="-constructor-attributes-"><code>constructor(attributes)</code></h3>
+<p>Creates a new <code>LazoWidget</code> instance.
+You may override it if you need to perform some initialization while the instance is created.
+The <code>LazoWidget</code> constructor must be called though.</p>
+<p>Calls the <a href="http://backbonejs.org/#Model-constructor">Backbone.Model.constructor</a>.</p>
+<p><em>Note - When rendering a route response Lazo automatically creates widget instances and resolves instance atrributes.</em></p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>attributes</code> <em>(Object)</em>: Attributes delcared in the widget container markup.</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">
+new LazoWidget(attributes);
+</code></pre>
+<h3 id="-initialize-"><code>initialize()</code></h3>
+<p>Called during <code>LazoWidget</code> construction.
+Used to execute initialization logic when the instance is created.</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoWidget&#39;], function (LazoWidget) {
+
+    &#39;use strict&#39;;
+
+    return LazoWidget.extend({
+
+        initialize: function () {
+            // initialization logic
+        }
+
+    });
+
+});
+</code></pre>
+<h3 id="-render-options-"><code>render(options)</code></h3>
+<p>Render markup for a widget.</p>
+<ol>
+<li><code>options</code> <em>(Object)</em>: Options for render.<ul>
+<li><code>success</code> <em>(Function)</em>: Function to call when successful.</li>
+<li><code>error</code> <em>(Function)</em>: Function to call if there is a failure.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoWidget&#39;], function (LazoWidget) {
+
+    &#39;use strict&#39;;
+
+    return LazoWidget.extend({
+
+        render: function (options) {
+            options.success(&#39;I am a widget!&#39;);
+        }
+
+    });
+
+});
+</code></pre>
+<h3 id="-afterrender-options-"><code>afterRender(options)</code></h3>
+<p>Called after a widget is attached to the DOM.</p>
+<p><em>Note - Only called on the client.</em></p>
+<ol>
+<li><code>options</code> <em>(Object)</em>: Options for render.<ul>
+<li><code>success</code> <em>(Function)</em>: Function to call when successful. Removes widget container css class <code>rendering</code> and adds <code>rendered</code></li>
+<li><code>error</code> <em>(Function)</em>: Function to call if there is a failure.</li>
+</ul>
+</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoWidget&#39;], function (LazoWidget) {
+
+    &#39;use strict&#39;;
+
+    return LazoWidget.extend({
+
+        afterRender: function (options) {
+            // do something
+            options.success();
+        }
+
+    });
+
+});
+</code></pre>
+<h3 id="-bind-el-"><code>bind(el)</code></h3>
+<p>Called when a widget is attached to the DOM.</p>
+<p><em>Note - Only called on the client.</em></p>
+<ol>
+<li><code>el</code> <em>(Object)</em>: Widget containing element.</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoWidget&#39;], function (LazoWidget) {
+
+    &#39;use strict&#39;;
+
+    return LazoWidget.extend({
+
+        bind: function (el) {
+            this.clickHandler = el.addEventListener(&#39;click&#39;, function (e) {
+                // do seomthing
+            }, false);
+        }
+
+    });
+
+});
+</code></pre>
+<h3 id="-unbind-el-"><code>unbind(el)</code></h3>
+<p>Called when a widget is detached from the DOM.</p>
+<p><em>Note - Only called on the client.</em></p>
+<ol>
+<li><code>el</code> <em>(Object)</em>: Widget containing element.</li>
+</ol>
+<h4 id="example">Example</h4>
+<pre><code class="lang-js">define([&#39;lazoWidget&#39;], function (LazoWidget) {
+
+    &#39;use strict&#39;;
+
+    return LazoWidget.extend({
+
+        unbind: function (el) {
+            el.removeEventListener(&#39;click&#39;, this.clickHandler, false)
+        }
+
+    });
+
+});
+</code></pre>
+<h3 id="-attrvalcoercion-"><code>attrValCoercion</code></h3>
+<p>Instructs widget whether or not to coerce attribute data types. Default value is <code>true</code>.</p>
+<pre><code class="lang-html">&lt;div lazo-widget=&quot;foo&quot; data-a=&quot;true&quot; data-b=&quot;1.87&quot; data-c=&quot;{ foo: true, bar: &#39;I am a string&#39; }&quot; data-d=&quot;[1, 2, 3]&quot;&gt;
+</code></pre>
+<p>The attributes in the above markup would be converted to the following values:</p>
+<ul>
+<li><em>data-a:</em> Boolean</li>
+<li><em>data-b:</em> Number</li>
+<li><em>data-c:</em> Object</li>
+<li><em>data-d:</em> Array</li>
+</ul>

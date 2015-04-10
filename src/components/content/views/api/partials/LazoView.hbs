@@ -1,0 +1,26 @@
+<p>LazoViews extend <a href="https://github.com/lazojs/flexo/blob/master/docs/index.md#flexoview">flexo.View</a>. They are designed
+to run within the Lazo rendering life cycle. The following properties and methods should <strong>not</strong> be overridden:</p>
+<ul>
+<li><code>hasTemplate</code></li>
+<li><code>eventNameSpace</code></li>
+<li><code>attributeNameSpace</code></li>
+<li><code>getAttributes</code></li>
+<li><code>augment</code></li>
+<li><code>getInnerHtml</code></li>
+</ul>
+<p>All of the properties and methods can be overridden and will function within the Lazo rendering life cycle allowing
+you to plugin any rendering solution that is environment agnostic and returns a string. For more information on the
+different properties and methods please consult the flexo
+<a href="https://github.com/lazojs/flexo/blob/master/docs/index.md#flexoview">documentation</a>.</p>
+<pre><code class="lang-js">define([&#39;lazoView&#39;], function (LazoView) {
+
+    return LazoView.extend({
+
+        doSomething: function () {
+            return &#39;something&#39;;
+        }
+
+    });
+
+});
+</code></pre>
