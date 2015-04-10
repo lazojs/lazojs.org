@@ -21,8 +21,6 @@
   "bugs": {
     "url": "https://github.com/lazojs/lazojs.org/issues"
   },
-  "private": true,
-  "main": "src/index",
   "scripts": {
     "test": "gulp ci",
     "start": "node_modules/lazo/lazo.js start dist",
