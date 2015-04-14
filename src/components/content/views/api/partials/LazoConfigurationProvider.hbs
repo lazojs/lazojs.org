@@ -1,0 +1,85 @@
+<p>Lazo comes packaged with a Configuration Provider, <code>LAZO.config</code>.  Configuration data can be provided statically (<code>LAZO.config.HashPlugin</code>) or via a JSON configuration file (<code>LAZO.config.JSONPlugin</code>).  Here is an example of how to use the JSONPlugin configuration provider:</p>
+<pre><code class="lang-javascript">define([&#39;lazoApp&#39;], function (LazoApp) {
+
+    &#39;use strict&#39;;
+
+    return LazoApp.extend({
+
+        initialize: function (callback) {
+            var jsonPlugin = new LAZO.config.JSONPlugin({
+
+                file: &#39;app/env.json&#39;,
+
+                // called up on construction
+                success: function () {
+                    callback();
+                },
+
+                error: function (err) {
+                    LAZO.logger.error(&#39;[app.initialize] Could not load env config&#39;, err);
+                    callback();
+                }
+
+            });
+
+            LAZO.config.addPlugin(jsonPlugin);
+        }
+
+    });
+
+});
+</code></pre>
+<p>In order to support integration with more advanced configuration management systems, Lazo also provides a plug-in model that allows for custom configuration providers to be plugged into Lazo.  Here is an example of a custom plugin that initializes the configuration data from your own content management system:</p>
+<pre><code class="lang-javascript">define([&#39;lazoApp&#39;], function (LazoApp) {
+
+    &#39;use strict&#39;;
+
+    return LazoApp.extend({
+
+        initialize: function (callback) {
+
+            var cmPlugin = Config.Plugin.extend({
+                constructor: function (options) {
+                    if (LAZO.isServer) {
+                        //initialize configuration data from Content Management System.
+                        this._initServer(options);
+                    } else {
+                        //Use the Content Management System&#39;s client to initialize configuration data.
+                        this._initClient(options);
+                    }
+                }, ...
+            });
+
+            LAZO.config.addPlugin((new cmPlugin());
+        }
+
+    });
+
+});
+</code></pre>
+<p>In certain cases you may want contextual information to be passed into your configuration provider, so that you can make your application change configuration, i.e. behavior, at execution time.  This is most useful when implementing an authorization model in which the component configurations might be different for each user.  Here is an example of a custom plugin that retrieves the configuration data differently based on the context options parameter:</p>
+<pre><code class="lang-javascript">define([&#39;lazoApp&#39;], function (LazoApp) {
+
+    &#39;use strict&#39;;
+
+    return LazoApp.extend({
+
+        initialize: function (callback) {
+
+            var contextPlugin = Config.Plugin.extend({
+                get: function (key, options) {
+                    if (options &amp;&amp; options.context) {
+                        // retrieve configuration data based on the user&#39;s context.
+                    } else  {
+                        // otherwise, retrieve configuration data normally.
+                    }
+                }
+            });
+
+            LAZO.config.addPlugin((new contextPlugin());
+        }
+
+    });
+
+});
+</code></pre>

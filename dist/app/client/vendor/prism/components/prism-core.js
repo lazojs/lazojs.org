@@ -50,7 +50,7 @@ var _ = self.Prism = {
 					return clone;
 
 				case 'Array':
-					return o.slice();
+					return o.map(function(v) { return _.util.clone(v); });
 			}
 
 			return o;
@@ -181,6 +181,8 @@ var _ = self.Prism = {
 			return;
 		}
 
+		code = code.replace(/^(?:\r?\n|\r)/,'');
+
 		var env = {
 			element: element,
 			language: language,
@@ -210,7 +212,7 @@ var _ = self.Prism = {
 			}));
 		}
 		else {
-			env.highlightedCode = _.highlight(env.code, env.grammar, env.language)
+			env.highlightedCode = _.highlight(env.code, env.grammar, env.language);
 
 			_.hooks.run('before-insert', env);
 
@@ -347,7 +349,7 @@ Token.stringify = function(o, language, parent) {
 		return o;
 	}
 
-	if (Object.prototype.toString.call(o) == '[object Array]') {
+	if (_.util.type(o) === 'Array') {
 		return o.map(function(element) {
 			return Token.stringify(element, language, o);
 		}).join('');

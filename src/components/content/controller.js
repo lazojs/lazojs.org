@@ -19,22 +19,12 @@ define(['app/controller', 'text!./views/partials/main.hbs'],
         index: function (options) {
             var self = this;
             var topic = this.ctx.params.topic;
-            var counter = 0;
-            var expected = 2;
 
             function success() {
-                counter++;
-                if (counter === expected) {
-                    self.registerPartials(function () {
-                        Ctl.prototype.index.call(self, options);
-                    });
-                }
+                self.registerPartials(function () {
+                    Ctl.prototype.index.call(self, options);
+                });
             }
-
-            options.ctx = {
-                models: {},
-                collections: {}
-            };
 
             this.view = views[topic] ? (topic + '/index') : 'index';
             this.ctx.params.path = 'components/content/views/' +
@@ -46,24 +36,10 @@ define(['app/controller', 'text!./views/partials/main.hbs'],
                 },
                 success: function (collection) {
                     self.ctx.collections.sidebar = collection;
-                    options.ctx.collections.sidebar = collection;
                     success();
                 },
                 error: options.error
             });
-
-            this.loadModel('content', {
-                params: {
-                    path: self.ctx.params.path + 'title.json'
-                },
-                success: function (model) {
-                    self.ctx.models.title = model;
-                    options.ctx.models.title = model;
-                    success();
-                },
-                error: options.error
-            });
-
         },
 
         registerPartials: function (callback) {

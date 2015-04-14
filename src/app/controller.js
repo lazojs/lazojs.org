@@ -34,9 +34,7 @@ define(['lazoCtl', 'underscore'], function (LazoCtl, _) {
                 this.addChild(components[i].target, components[i].name, {
                     error: error,
                     success: success,
-                    ctx: _.extend({
-                        params: this.ctx.params
-                    }, options.ctx)
+                    params: this.ctx.params
                 });
             }
         }

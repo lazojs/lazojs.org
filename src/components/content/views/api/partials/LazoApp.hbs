@@ -1,0 +1,525 @@
+<p><code>LazoApp</code> class provides a common set of apis that can be used at both client and server side. Your application has to extend <code>LazoApp</code> in <code>application.js</code> file. This is where you load environment specific configuration.</p>
+<p>Example:</p>
+<pre><code class="lang-javascript">define([&#39;lazoApp&#39;], function (LazoApp) {
+
+    &#39;use strict&#39;;
+
+    return LazoApp.extend({
+
+        initialize: function (callback) {
+            return callback();
+        }
+
+    });
+</code></pre>
+<p>You can access the Lazo App object using <code>LAZO.app</code> global variable.</p>
+<h3 id="-a-name-isclient-a-isclient-"><a name="isClient"></a><code>isClient</code></h3>
+<p>Is set to true if the application is running in the browser (client side) else false</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">
+if(LAZO.app.isClient) {
+  console.log(&quot;I am the client&quot;);  // run only at client side
+} else {
+  console.log(&quot;I am the server&quot;);  // run only at server side
+}
+</code></pre>
+<h3 id="-a-name-isserver-a-isserver-"><a name="isServer"></a><code>isServer</code></h3>
+<p>Is set to true if the application is running in the server (client side)</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">if(LAZO.app.isServer) {
+  console.log(&quot;I am the server&quot;); // run only at server side
+} else {
+  console.log(&quot;I am the browser&quot;); // run only at client side
+}
+</code></pre>
+<h3 id="-a-name-setdata-a-setdata-key-val-ctx-"><a name="setData"></a><code>setData(key, val, ctx)</code></h3>
+<p>Stores Key-Value data in a given context which can be then accessed from both server and client side.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>key</code> <em>(String)</em>: The string key;</li>
+<li><code>val</code> <em>(Object)</em>: The object to be stored and shared.</li>
+<li><code>ctx</code> <em>(Object)</em>: The context object</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The application instance.</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">define([&#39;lazoCtl&#39;], function (Ctl) {
+    &#39;use strict&#39;;
+    return Ctl.extend({
+        index: function (options) {
+            LAZO.app.setData(&#39;foo&#39;, {bar:&#39;quux&#39;}, this.ctx);
+            // controller logic
+            options.success(index);
+        }
+    });
+});
+</code></pre>
+<h3 id="-a-name-getdata-a-getdata-key-ctx-"><a name="getData"></a><code>getData(key, ctx)</code></h3>
+<p>Retrieves shared Key-Value data from the context.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>key</code> <em>(String)</em>: The string key;</li>
+<li><code>ctx</code> <em>(Object)</em>: The context object</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The data object</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">define([&#39;lazoView&#39;], function (LazoView) {
+    &#39;use strict&#39;;
+    return LazoView.extend({
+        initialize: function(options) {
+            console.log(&quot;Foo = &quot; + JSON.stringify(LAZO.app.getData(&#39;foo&#39;, this.ctl.ctx)));
+        }
+    });
+});
+</code></pre>
+<h3 id="-a-name-addrequestfilter-a-addrequestfilter-regex-func-"><a name="addRequestFilter"></a><code>addRequestFilter(regex, func)</code></h3>
+<p>Adds a filter to redirect routes that match the given regex to another location before executing an action assosciated with the route. A good use case is if an application requires authentication. A filter would look for the existence of a session cookie. If the cookie existed it would update the time stamp and Lazo would execute the component action for the
+requested route by returning <code>undefined</code>. If the cookie were invalid then the filter would return the path to the
+login page.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>regex</code> <em>(String)</em> : Regular expression for the route</li>
+<li><code>func</code> <em>(Function)</em>: Filter function that must implement the interface <ul>
+<li><code>function (path, params, ctx, options)</code><ul>
+<li><code>[path]</code> <em>(String)</em>:</li>
+<li><code>[params]</code> <em>(Object</em>): The params hash, used in URL substitution</li>
+<li><code>[ctx]</code> <em>(Object)</em>: The context object</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance</li>
+</ul>
+</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the model instance has been successfully loaded, it must implement the <code>function(model)</code> interface:<ul>
+<li><code>model</code> <em>(LazoModel)</em>: The model instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The Application instance</li>
+</ul>
+<h4 id="example">Example</h4>
+<blockquote>
+<p>Filters are applied in the order they were entered for a given regular expression that matches a route. If multiple
+regular expression keys are matched then the filters are applied in order matched and then in order of addition to
+the matching regular expression key.</p>
+</blockquote>
+<pre><code class="lang-javascript">LAZO.app.addRequestFilter(&#39;.*&#39;, function (path, params, ctx, options) {
+    var sessionCookie = ctx.getCookie(&#39;session_token&#39;);
+
+    // invalid session; user redirected to login route
+    if (!sessionCookie &amp;&amp; path !== &#39;login&#39;) {
+        return options.sucess(&#39;/login&#39;);
+    }
+
+    // valid session
+    // updated cookie
+    ctx.setCookie(&#39;session_token&#39;, sessionCookie, {
+        ttl: 60 * 60 * 1000,
+        path: &#39;/&#39;
+    });
+
+    // return undefined; user continues to original route unless another
+    // applied filter returns a redirect
+    return options.success();
+});
+</code></pre>
+<blockquote>
+<p>If something went really, really wrong in a filter you can call <code>options.error(err)</code>. This
+will trigger a 500 error and render the corresponding <a href="Error-Templates">error template</a></p>
+</blockquote>
+<h3 id="-a-name-addroutes-a-addroutes-routes-"><a name="addRoutes"></a><code>addRoutes(routes)</code></h3>
+<p>Adds routes to the LAZO routes.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>routes</code> <em>(Object)</em>: Lazo Routes Objects</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The Application instance</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">    LAZO.app.addRoutes({
+        &quot;/url_path&quot;: {
+            &quot;component&quot;: &quot;component_name&quot;,
+            &quot;bundle&quot;: &quot;bundle_name&quot;,
+        }});
+</code></pre>
+<blockquote>
+<p>For more information on Lazo routes check [wiki] (<a href="https://github.com/lazojs/lazo/wiki/Configuration">https://github.com/lazojs/lazo/wiki/Configuration</a>)</p>
+</blockquote>
+<h3 id="-a-name-navigate-a-navigate-ctx-routename-"><a name="navigate"></a><code>navigate(ctx, routeName)</code></h3>
+<p>Used to navigate to a different route at client or server side.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>ctx</code> <em>(Object)</em>: Context Object</li>
+<li><code>routeName</code> <em>(String)</em>: new route</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.navigate(this.ctl.ctx, &quot;/new-route&quot;);
+</code></pre>
+<h3 id="-a-name-loadmodel-a-loadmodel-modelname-options-"><a name="loadModel"></a><code>loadModel(modelName, options)</code></h3>
+<p>Loads the lazo model. For more information on models refer to <a href="LazoModel.md">LazoModel</a></p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>modelName</code> <em>(String)</em>: The model name, it should match a model declared under the <code>models</code> directory;</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the model instance has been successfully loaded, it must implement the            <code>function(model)</code> interface:<ul>
+<li><code>model</code> <em>(LazoModel)</em>: The model instance.</li>
+</ul>
+</li>
+<li><code>[ctx]</code> <em>(Object)</em>: The context object </li>
+</ul>
+</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The Application instance</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.loadModel(&#39;person&#39;, {
+    error: function (error) {
+        console.log(&#39;Oops...&#39;);
+    },
+    params: {
+        id: 123 // See LazoModel for params usage
+    },
+    success: function (person) {
+        console.log(&#39;Yay!&#39;);
+    },
+    ctx: this.ctl.ctx // Current context of the request
+    });
+</code></pre>
+<h3 id="-a-name-loadcollection-a-loadcollection-collectionname-options-"><a name="loadCollection"></a><code>loadCollection(collectionName, options)</code></h3>
+<p>Loads the lazo collection. For more information on models refer to <a href="LazoCollection.md">LazoCollection</a></p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>collectionName</code> <em>(String)</em>: The collection name, it should match a collection declared under the <code>models</code> directory</li>
+<li><code>[options]</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the model instance has been successfully loaded, it must implement the            <code>function(model)</code> interface:<ul>
+<li><code>model</code> <em>(LazoModel)</em>: The model instance.</li>
+</ul>
+</li>
+<li><code>[ctx]</code> <em>(Object)</em>: The context object</li>
+</ul>
+</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The Application instance</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.loadCollection(&#39;people&#39;, {
+    error: function (error) {
+        console.log(&#39;Oops...&#39;);
+    },
+    params: {
+        id: 123 // See LazoModel for params usage
+    },
+    success: function (people) {
+        console.log(&#39;Yay!&#39;);
+    },
+    ctx: this.ctl.ctx // Current context of the request
+    });
+</code></pre>
+<h3 id="-a-name-createmodel-a-createmodel-modelname-attributes-options-"><a name="createModel"></a><code>createModel(modelName, attributes, options)</code></h3>
+<p>Creates a new model instance.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>modelName</code> <em>(String)</em>: The model name, it should match a model declared under the <code>models</code> directory;</li>
+<li><code>[attributes]</code> <em>(Object)</em>: An hash of attributes to initialize the model;</li>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the model instance has been successfully created, it must implement the <code>function(model)</code> interface:<ul>
+<li><code>model</code> <em>(LazoModel)</em>: The recently created model instance.</li>
+</ul>
+</li>
+<li><code>[ctx]</code> <em>(Object)</em>: The context object</li>
+</ul>
+</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The Application instance</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.createModel(&#39;person&#39;, {
+  name: &#39;Tim&#39;, age: 5
+}, {
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  success: function (person) {
+    console.log(person.get(&#39;name&#39;) + &quot; object was created&quot;);;
+  }
+  ctx: this.ctl.ctx   // Current request context
+});
+</code></pre>
+<h3 id="-a-name-createcollection-a-createcollection-collectionname-attributes-options-"><a name="createCollection"></a><code>createCollection(collectionName, attributes, options)</code></h3>
+<p>Creates a new collection instance.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>collectionName</code> <em>(String)</em>: The collection name, it should match a collection declared under the <code>models</code> directory;</li>
+<li><code>[attributes]</code> <em>(Array)</em>: An array of attributes to initialize the child models;</li>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>modelName</code> <em>(String)</em>: The model that should be used to create the child instances, it must match a existing model in the application repo;</li>
+<li><code>[params]</code> <em>(Object)</em>: The params hash, used in URL substitution;</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after the collection instance has been successfully created, it must implement the <code>function(collection)</code> interface:<ul>
+<li><code>collection</code> <em>(LazoCollection)</em>: The recently created collection instance.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<p><em>(Object)</em>: The Application instance</p>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.createCollection(&#39;people&#39;, [
+    {name: &#39;Tim&#39;, age: 5},
+    {name: &#39;Ida&#39;, age: 26},
+    {name: &#39;Rob&#39;, age: 55}
+  ],{
+  error: function (error) {
+    console.log(&#39;Oops...&#39;);
+  },
+  modelName: &#39;person&#39;,
+  success: function (collection) {
+    console.log(&#39;Yay!&#39;);
+  },
+  ctx: this.ctl.ctx   // current request context
+});
+</code></pre>
+<h3 id="-a-name-addtag-a-addtag-name-attributes-content-"><a name="addTag"></a><code>addTag(name, attributes, content)</code></h3>
+<p>Adds the html tag in the document.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>name</code> <em>(String)</em> : Tag name</li>
+<li><code>attributes</code> <em>(Objects)</em> : Hash of various attributes for the tag</li>
+<li><code>content</code> <em>(String)</em> : Content for the tag</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The application instance<h4 id="example">Example</h4>
+</li>
+</ul>
+<pre><code class="lang-javascript">LAZO.app.addTag(&#39;script&#39;,
+    {
+        &#39;type&#39;: &#39;text/javascript&#39;,
+        &#39;lazo-application&#39;: &#39;1&#39;
+    }, &#39;Hello&#39;);
+
+// will add &lt;script type=&quot;text/javascript&quot; src=&quot;/hello.js&quot;&gt;Hello&lt;/script&gt; in &lt;head&gt; tag
+</code></pre>
+<h3 id="-a-name-sethtmltag-a-sethtmltag-val-"><a name="setHtmlTag"></a><code>setHtmlTag(val)</code></h3>
+<p>Sets the html tag of the document to the value specified.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>val</code> <em>(String)</em>: HTML tag value</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The appliction instance</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.setHtmlTag(&#39;&lt;html lang=&quot;fr&quot;&gt;&#39;);
+
+// sets the document html element to &lt;html lang=&quot;fr&quot;&gt;
+</code></pre>
+<h3 id="-a-name-setbodyclass-a-setbodyclass-val-"><a name="setBodyClass"></a><code>setBodyClass(val)</code></h3>
+<p>Sets the class for the body tag in the document</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>val</code> <em>(String)</em>: css class for the body tag</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The application instance</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.setBodyClass(&#39;foo&#39;);
+// sets the DOM&#39;s body tag to &lt;body class=&#39;foo&#39;&gt;
+</code></pre>
+<h3 id="-a-name-setdefaulttitle-a-setdefaulttitle-title-"><a name="setDefaultTitle"></a><code>setDefaultTitle(title)</code></h3>
+<p>Sets the title of the DOM</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>title</code> <em>(String)</em>: The title to be set</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The application instance</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.setDefaultTitle(&#39;FOO&#39;);
+// will set the title to FOO &lt;title&gt;FOO&lt;/title&gt;
+</code></pre>
+<h3 id="-a-name-registertemplateengine-a-registertemplateengine-enginedef-options-"><a name="registerTemplateEngine"></a><code>registerTemplateEngine(engineDef, options)</code></h3>
+<p>Registers a new template engine. For more information please refer to <a href="https://github.com/lazojs/lazo/wiki/Templates">templates</a> </p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>engineDef</code> <em>(Object)</em>:Hash for Template Engine Definition<ul>
+<li><code>name</code> <em>(String)</em>: Template Engine Name</li>
+<li><code>extension</code> <em>(String)</em>: Extension for the template files</li>
+<li><code>handler</code> <em>(Function)</em>: Engine handler function that implements <code>function(engine)</code> interface and returns a object with following methods and functions<ul>
+<li><code>compile</code> <em>(Function)</em>: Implementation for the interface <code>function(template)</code><ul>
+<li><code>template</code> <em>(Object)</em>:</li>
+</ul>
+</li>
+<li><code>execute</code> <em>(Function)</em>: Implementation for the interface <code>function(template, context, templateName)</code><ul>
+<li><code>template</code> <em>(Object)</em>:</li>
+<li><code>context</code> <em>(Object)</em>:</li>
+<li><code>templateName</code> <em>(String)</em>:</li>
+</ul>
+</li>
+<li><code>precompile</code> <em>(Function)</em>: Implementation for the interface <code>function(template)</code><ul>
+<li><code>template</code> <em>(Object)</em>:</li>
+</ul>
+</li>
+<li><code>engine</code> <em>(Object)</em>: Template engine instance</li>
+</ul>
+</li>
+<li><code>path</code> <em>(String)</em>: Path to the template engine</li>
+<li><code>exp</code> <em>(String)</em>:</li>
+</ul>
+</li>
+<li><code>options</code> <em>(Object)</em>: The options hash:<ul>
+<li><code>[error]</code> <em>(Function)</em>: Called if an error occurs, it must implement the <code>function(error)</code> interface:<ul>
+<li><code>error</code> <em>(Error)</em>: The <code>Error</code> instance;</li>
+</ul>
+</li>
+<li><code>[success]</code> <em>(Function)</em>: Called after template engine is successfully registered, it must implement <code>function(engine)</code> interface.<ul>
+<li><code>engine</code> <em>(Object)</em>: The instance of newly registered template engine</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The application instance</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">define([&#39;lazoApp&#39;, &#39;l!app/utils/jade&#39;], function (LazoApp, Jade) {
+
+    &#39;use strict&#39;;
+
+    var jadeEngineDef = {
+        name: &#39;jade&#39;,
+        extension: &#39;jade&#39;,
+        handler: function(jade) {
+          return {
+              compile: function(template) {
+                  return template;
+              },
+              precompile: function(template) {
+                  return jade.compileClient(template, null);
+              },
+              execute: function(template, context, templateName) {
+                  return jade.render(template, context);
+              },
+              engine: Jade
+          };
+        },
+        path: &#39;app/utils/jade&#39;
+    };
+
+    return LazoApp.extend({
+
+        initialize: function (callback) {
+
+            LAZO.app.registerTemplateEngine(jadeEngineDef, {
+                success: function(engine) {
+                    // console.log(engine);
+                    LAZO.app.setDefaultTemplateEngine(&quot;jade&quot;);
+                    callback();
+                },
+                error: function(error){
+                    console.log(&quot;Error while registering jade template engine&quot;);
+                    callback();
+                }
+
+            });
+
+        }
+    });
+});
+</code></pre>
+<blockquote>
+<p>Currently we do not precompile the templates and send it to client, so you will have to send the entire template engine to the client. In future precompiled templates would be sent to the client.</p>
+</blockquote>
+<h3 id="-a-name-gettemplateengine-a-gettemplateengine-enginename-"><a name="getTemplateEngine"></a><code>getTemplateEngine(engineName)</code></h3>
+<p>Retrieves the template engine for the given engine name.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>engineName</code> <em>(String)</em>: Template Engine Name</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: Template Engine object</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.getTemplateEngine(&#39;handlebars&#39;)
+</code></pre>
+<h3 id="-a-name-gettemplateext-a-gettemplateext-enginename-"><a name="getTemplateExt"></a><code>getTemplateExt(engineName)</code></h3>
+<p>Retrives the extension for the template files for a given template engine name.</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>engineName</code> <em>(String)</em>: The name of the template engine</li>
+</ul>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(String)</em>:The extension of the template files</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.getTemplateExt(&#39;handlebars&#39;);  // returns &#39;hbs&#39;
+</code></pre>
+<h3 id="-a-name-getdefaulttemplateengine-a-getdefaulttemplateengine-"><a name="getDefaultTemplateEngine"></a><code>getDefaultTemplateEngine()</code></h3>
+<p>Retrives the default template engine for the lazo application</p>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(Object)</em>: The template engine object</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.getDefaultTemplateEngine();
+</code></pre>
+<h3 id="-a-name-getdefaulttemplateenginename-a-getdefaulttemplateenginename-"><a name="getDefaultTemplateEngineName"></a><code>getDefaultTemplateEngineName()</code></h3>
+<p>Retrieves the default template engine name for the lazo application.</p>
+<h4 id="returns">Returns</h4>
+<ul>
+<li><em>(String)</em>: The template engine name</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.getDefaultTemplateEngineName()
+</code></pre>
+<h3 id="-a-name-setdefaulttemplateengine-a-setdefaulttemplateengine-enginename-"><a name="setDefaultTemplateEngine"></a><code>setDefaultTemplateEngine(engineName)</code></h3>
+<p>Sets the default template engine for lazo application</p>
+<h4 id="arguments">Arguments</h4>
+<ul>
+<li><code>engineName</code> <em>(String)</em>: The name of the template engine. </li>
+</ul>
+<h4 id="exception">Exception</h4>
+<ul>
+<li><code>Error</code> <em>(Exception)</em>: throws an exception if there exists no engine registered with the name provided</li>
+</ul>
+<h4 id="example">Example</h4>
+<pre><code class="lang-javascript">LAZO.app.setDefaultTemplateEngine(&#39;handlebars&#39;);
+</code></pre>
